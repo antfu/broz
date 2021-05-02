@@ -1,0 +1,24 @@
+{
+  "name": "broz",
+  "version": "0.0.0",
+  "description": "A simple, frameless browser",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antfu/broz"
+  },
+  "homepage": "https://github.com/antfu/broz",
+  "bugs": "https://github.com/antfu/broz/issues",
+  "funding": "https://github.com/sponsors/antfu",
+  "author": "antfu <anthonyfu117@hotmail.com>",
+  "scripts": {
+    "dev": "electron index.js"
+  },
+  "bin": {
+    "broz": "./broz.js"
+  },
+  "dependencies": {
+    "electron": "^12.0.6",
+    "execa": "^5.0.0"
+  }
+}

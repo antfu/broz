@@ -1,33 +1,50 @@
 const { app, BrowserWindow } = require('electron')
+const createState = require('electron-window-state')
 
-let mainWindow = null
+let win = null
 
 const createWindow = async () => {
-  mainWindow = new BrowserWindow({
+  const state = createState({
+    defaultWidth: 600,
+    defaultHeight: 400,
+  })
+
+  win = new BrowserWindow({
+    x: state.x,
+    y: state.y,
+    width: state.width,
+    height: state.height,
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },
   })
 
+  state.manage(win)
+
   // injecting a dragable area
-  mainWindow.webContents.on('dom-ready', function (e) {
-    mainWindow.webContents.executeJavaScript(`;(() => {
+  win.webContents.on('dom-ready', () => {
+    win.webContents.executeJavaScript(`;(() => {
 const el = document.createElement('div')
-el.id = 'inject-zero-drag'
+el.id = 'injected-broz-drag'
 const style = document.createElement('style')
-style.innerHTML="#inject-zero-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:99999999;}#inject-zero-drag:hover{background:#8885;}"
+style.innerHTML="#injected-broz-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:99999999;}#injected-broz-drag:hover{background:#8885;}"
 document.body.appendChild(el)
 document.body.appendChild(style)
 })()`)
   })
 
-  await mainWindow.loadURL(process.argv[2] || 'https://github.com/antfu/zero')
+  let url = process.argv[2] || 'https://github.com/antfu/broz'
+  if (!url.includes('://')) {
+    url = 'http://' + url
+  }
+
+  await win.loadURL(url)
 }
 
 app.on('second-instance', () => {
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) mainWindow.restore()
-    mainWindow.focus()
+  if (win) {
+    if (win.isMinimized()) win.restore()
+    win.focus()
   }
 })
 

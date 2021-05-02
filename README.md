@@ -4,6 +4,6 @@ broz
 
 a simple, frameless browser for screenshots
 
-$ npx broz https://antfu.me
+$ npx broz antfu.me
 
 </samp>

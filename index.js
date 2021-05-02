@@ -33,7 +33,7 @@ document.body.appendChild(style)
 })()`)
   })
 
-  let url = process.argv[2] || 'https://github.com/antfu/broz'
+  let url = process.argv[2] || 'https://github.com/antfu/broz#readme'
   if (!url.includes('://')) {
     url = 'http://' + url
   }

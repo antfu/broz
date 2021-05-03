@@ -29,7 +29,7 @@ const createWindow = async () => {
   })
 
   state.manage(win)
-
+  win.webContents.openDevTools()
   // injecting a dragable area
   win.webContents.on('dom-ready', () => {
     win.webContents.executeJavaScript(`;(() => {
@@ -39,6 +39,11 @@ const style = document.createElement('style')
 style.innerHTML="#injected-broz-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:99999999;}#injected-broz-drag:hover{background:#8885;}"
 document.body.appendChild(el)
 document.body.appendChild(style)
+
+const rootStyle = document.createElement('style')
+rootStyle.innerHTML="::-webkit-scrollbar {display: none;}"
+document.head.appendChild(rootStyle)
+
 })()`)
   })
 

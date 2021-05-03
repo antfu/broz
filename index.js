@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const createState = require('electron-window-state')
-const { platform } = require("os")
+const { platform } = require('os')
 
 let win = null
 
@@ -25,7 +25,7 @@ const createWindow = async () => {
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },
-    frame: !frameless
+    frame: !frameless,
   })
 
   state.manage(win)
@@ -33,13 +33,9 @@ const createWindow = async () => {
   // injecting a dragable area
   win.webContents.on('dom-ready', () => {
     win.webContents.executeJavaScript(`;(() => {
-const el = document.createElement('div')
-el.id = 'injected-broz-drag'
-const style = document.createElement('style')
-style.innerHTML="#injected-broz-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:99999999;}#injected-broz-drag:hover{background:#8885;}"
-document.body.appendChild(el)
-document.body.appendChild(style)
-})()`)
+  const body = document.getElementsByTagName("body")[0];
+  body.style['-webkit-app-region'] = 'drag';
+  })()`)
   })
 
   let url = process.argv[2] || 'https://github.com/antfu/broz#readme'

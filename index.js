@@ -29,7 +29,6 @@ const createWindow = async () => {
   })
 
   state.manage(win)
-  win.webContents.openDevTools()
   // injecting a dragable area
   win.webContents.on('dom-ready', () => {
     win.webContents.executeJavaScript(`;(() => {

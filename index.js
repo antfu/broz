@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const createState = require('electron-window-state')
+const { platform } = require("os")
 
 let win = null
 
@@ -9,6 +10,13 @@ const createWindow = async () => {
     defaultHeight: 400,
   })
 
+  // windows frameless workaround
+  // https://www.electronjs.org/docs/api/frameless-window#create-a-frameless-window
+  let frameless = false
+  let currentOS = platform()
+  // 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'
+  if (currentOS == 'win32') frameless = true
+
   win = new BrowserWindow({
     x: state.x,
     y: state.y,
@@ -17,6 +25,7 @@ const createWindow = async () => {
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },
+    frame: !frameless
   })
 
   state.manage(win)

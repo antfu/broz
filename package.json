@@ -7,23 +7,34 @@
     "type": "git",
     "url": "https://github.com/antfu/broz"
   },
+  "funding": "https://github.com/sponsors/antfu",
+  "author": "antfu <anthonyfu117@hotmail.com>",
   "main": "index.js",
   "bin": {
     "broz": "./broz.js"
   },
   "homepage": "https://github.com/antfu/broz",
   "bugs": "https://github.com/antfu/broz/issues",
-  "funding": "https://github.com/sponsors/antfu",
-  "author": "antfu <anthonyfu117@hotmail.com>",
   "scripts": {
     "dev": "electron index.js",
     "release": "bumpp --commit --tag --push && npm publish"
   },
   "dependencies": {
     "electron": "^12.0.6",
-    "electron-window-state": "^5.0.3"
+    "electron-window-state": "^5.0.3",
+    "yargs": "^17.0.0"
   },
   "devDependencies": {
-    "bumpp": "^6.0.6"
+    "@antfu/eslint-config": "^0.6.4",
+    "@types/yargs": "^16.0.1",
+    "bumpp": "^6.0.6",
+    "eslint": "^7.25.0",
+    "typescript": "^4.2.4"
+  },
+  "eslintConfig": {
+    "extends": "@antfu",
+    "rules": {
+      "@typescript-eslint/no-var-requires": 0
+    }
   }
 }

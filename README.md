@@ -33,6 +33,13 @@ You can do that by either:
 
 Just close it and create another :)
 
+### Navigation
+
+- <kbd>⌘[</kbd> - Backward
+- <kbd>⌘]</kbd> - Forward
+
+The rest is basically the same as Chrome.
+
 </details>
 
 </samp>

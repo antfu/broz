@@ -1,6 +1,4 @@
 // @ts-check
-
-const { platform } = require('os')
 const { app, BrowserWindow } = require('electron')
 const createState = require('electron-window-state')
 const yargs = require('yargs')
@@ -56,10 +54,6 @@ function createMainWindow(args) {
     defaultHeight: 540,
   })
 
-  // windows frameless workaround
-  // https://www.electronjs.org/docs/api/frameless-window#create-a-frameless-window
-  const frameless = platform() === 'win32'
-
   const main = new BrowserWindow({
     x: state.x,
     y: state.y,
@@ -68,7 +62,7 @@ function createMainWindow(args) {
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },
-    frame: !frameless,
+    frame: false,
   })
 
   state.manage(main)

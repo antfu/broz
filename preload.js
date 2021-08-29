@@ -1,6 +1,5 @@
 const { ipcRenderer, contextBridge } = require('electron')
 
-// ✅ Good code
 contextBridge.exposeInMainWorld('api', {
   moveWindow: (x, y) => ipcRenderer.send('broz-move', { xN: x, yN: y }),
   setPosition: () => ipcRenderer.send('broz-set-position'),

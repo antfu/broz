@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld('api', {
   back: () => ipcRenderer.send('broz-back'),
   forward: () => ipcRenderer.send('broz-forward'),
   loadUrl: url => ipcRenderer.send('broz-load-url', url),
+  toggleKiosk: () => ipcRenderer.send('broz-toggle-kiosk'),
 })

@@ -63,6 +63,10 @@ yargs
         ipcMain.on('broz-load-url', async(event, url) => {
           await main.loadURL(url.includes('://') ? url : `http://${url}`)
         })
+
+        ipcMain.on('broz-toggle-kiosk', (event) => {
+          main.setKiosk(!main.isKiosk())
+        })
       }
       catch (e) {
         console.error(e)
@@ -113,7 +117,7 @@ function configureWindow(win, args) {
       const brozElement = document.createElement('div')
       brozElement.id = 'broz-bar'
       brozElement.className = 'rounded flex flex-row bg-light-900 h-12 mx-2 mt-2 p-2 gap-2 items-center cursor-pointer'
-      brozElement.insertAdjacentHTML('afterbegin', '<div id="broz-move" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M29 15h-2a11 11 0 0 0-22 0H3a13 13 0 0 1 26 0z" fill="currentColor"></path> <path d="M25 28h-2V15a7 7 0 1 0-14 0v13H7V15a9 9 0 0 1 18 0z" fill="currentColor"></path> <path d="M21 20H11v-5a5 5 0 0 1 10 0zm-8-2h6v-3a3 3 0 0 0-6 0z" fill="currentColor" ></path> </svg> </div><div id="broz-back" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M10 16L20 6l1.4 1.4l-8.6 8.6l8.6 8.6L20 26z" fill="currentColor"></path> </svg> </div><div id="broz-forward" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M22 16L12 26l-1.4-1.4l8.6-8.6l-8.6-8.6L12 6z" fill="currentColor"></path> </svg> </div><input id="broz-url" class="rounded bg-light-100 h-10 p-2" placeholder="antfu.me"/>')
+      brozElement.insertAdjacentHTML('afterbegin', '<div id="broz-move" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M29 15h-2a11 11 0 0 0-22 0H3a13 13 0 0 1 26 0z" fill="currentColor"></path> <path d="M25 28h-2V15a7 7 0 1 0-14 0v13H7V15a9 9 0 0 1 18 0z" fill="currentColor"></path> <path d="M21 20H11v-5a5 5 0 0 1 10 0zm-8-2h6v-3a3 3 0 0 0-6 0z" fill="currentColor" ></path> </svg> </div><div id="broz-back" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M10 16L20 6l1.4 1.4l-8.6 8.6l8.6 8.6L20 26z" fill="currentColor"></path> </svg> </div><div id="broz-forward" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"> <svg viewBox="0 0 32 32"> <path d="M22 16L12 26l-1.4-1.4l8.6-8.6l-8.6-8.6L12 6z" fill="currentColor"></path> </svg> </div><div id="broz-kiosk" class="rounded bg-light-100 h-10 p-2 w-10 hover:bg-light-500"><svg viewBox="0 0 32 32"><path d="M22 16h2V8h-8v2h6v6z" fill="currentColor"></path><path d="M8 24h8v-2h-6v-6H8v8z" fill="currentColor"></path><path d="M26 28H6a2.002 2.002 0 0 1-2-2V6a2.002 2.002 0 0 1 2-2h20a2.002 2.002 0 0 1 2 2v20a2.002 2.002 0 0 1-2 2zM6 6v20h20.001L26 6z" fill="currentColor"></path></svg></div><input id="broz-url" class="rounded bg-light-100 h-10 p-2" placeholder="antfu.me"/>')
       document.body.appendChild(brozElement)
 
       let dragging = false
@@ -153,15 +157,23 @@ function configureWindow(win, args) {
         e.stopPropagation()
         window.api.back();
       })
+
       document.getElementById('broz-forward').addEventListener('click', (e) => {
         e.preventDefault()
         e.stopPropagation()
         window.api.forward();
       })
+
       document.getElementById('broz-url').addEventListener('change', (e) => {
         e.preventDefault()
         e.stopPropagation()
         window.api.loadUrl(e.target.value);
+      })
+
+      document.getElementById('broz-kiosk').addEventListener('click', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        window.api.toggleKiosk();
       })
 
       })()

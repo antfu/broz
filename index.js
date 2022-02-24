@@ -24,6 +24,16 @@ yargs
         type: 'boolean',
         default: false,
         desc: 'set window always on top',
+      })
+      .option('height', {
+        type: 'number',
+        default: false,
+        desc: 'set initial window height',
+      })
+      .option('width', {
+        type: 'number',
+        default: false,
+        desc: 'set initial window width',
       }),
     async(args) => {
       app.setName('Broz')
@@ -57,8 +67,8 @@ function createMainWindow(args) {
   const main = new BrowserWindow({
     x: state.x,
     y: state.y,
-    width: state.width,
-    height: state.height,
+    width: args.width ?? state.width,
+    height: args.height ?? state.height,
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },

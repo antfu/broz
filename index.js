@@ -126,11 +126,28 @@ document.head.appendChild(rootStyle)
         win.webContents.goBack()
         event.preventDefault()
       }
+      else if (input.key.toLowerCase() === '-') {
+        win.webContents.emit('zoom-changed', event, 'out')
+        event.preventDefault()
+      }
+      else if (input.key.toLowerCase() === '=') {
+        win.webContents.emit('zoom-changed', event, 'in')
+        event.preventDefault()
+      }
     }
   })
 
   win.webContents.on('did-create-window', (win) => {
     configureWindow(win, args)
+  })
+
+  win.webContents.on('zoom-changed', (event, zoomDirection) => {
+    const currentZoom = win.webContents.getZoomFactor()
+    if (zoomDirection === 'in')
+      win.webContents.zoomFactor = currentZoom + 0.15
+
+    if (zoomDirection === 'out')
+      win.webContents.zoomFactor = currentZoom - 0.15
   })
 
   if (args.top)

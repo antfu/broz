@@ -1,6 +1,6 @@
 {
   "name": "broz",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "packageManager": "pnpm@7.3.0",
   "description": "A simple, frameless browser for screenshots",
   "author": "antfu <anthonyfu117@hotmail.com>",

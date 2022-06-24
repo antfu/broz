@@ -1,40 +1,39 @@
 {
   "name": "broz",
   "version": "0.3.2",
+  "packageManager": "pnpm@7.3.0",
   "description": "A simple, frameless browser for screenshots",
+  "author": "antfu <anthonyfu117@hotmail.com>",
   "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/antfu/broz",
   "repository": {
     "type": "git",
     "url": "https://github.com/antfu/broz"
   },
-  "funding": "https://github.com/sponsors/antfu",
-  "author": "antfu <anthonyfu117@hotmail.com>",
+  "bugs": "https://github.com/antfu/broz/issues",
   "main": "index.js",
   "bin": {
     "broz": "./broz.js"
   },
-  "homepage": "https://github.com/antfu/broz",
-  "bugs": "https://github.com/antfu/broz/issues",
   "scripts": {
     "dev": "electron index.js",
+    "lint": "eslint .",
     "release": "bumpp --commit --tag --push && npm publish"
   },
   "dependencies": {
     "electron": "^12.0.6",
     "electron-window-state": "^5.0.3",
-    "yargs": "^17.0.0"
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.6.4",
-    "@types/yargs": "^16.0.1",
-    "bumpp": "^6.0.6",
-    "eslint": "^7.25.0",
-    "typescript": "^4.2.4"
+    "@antfu/eslint-config": "^0.25.1",
+    "@types/yargs": "^17.0.10",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.18.0",
+    "typescript": "^4.7.4"
   },
   "eslintConfig": {
-    "extends": "@antfu",
-    "rules": {
-      "@typescript-eslint/no-var-requires": 0
-    }
+    "extends": "@antfu"
   }
 }

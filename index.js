@@ -35,7 +35,7 @@ yargs
         default: false,
         desc: 'set initial window width',
       }),
-    async(args) => {
+    async (args) => {
       app.setName('Broz')
       app.on('window-all-closed', () => app.quit())
 
@@ -118,19 +118,19 @@ document.head.appendChild(rootStyle)
 
   win.webContents.on('before-input-event', (event, input) => {
     if (input.control || input.meta) {
-      if (input.key.toLowerCase() === ']') {
+      if (input.key === ']') {
         win.webContents.goForward()
         event.preventDefault()
       }
-      else if (input.key.toLowerCase() === '[') {
+      else if (input.key === '[') {
         win.webContents.goBack()
         event.preventDefault()
       }
-      else if (input.key.toLowerCase() === '-') {
+      else if (input.key === '-') {
         win.webContents.emit('zoom-changed', event, 'out')
         event.preventDefault()
       }
-      else if (input.key.toLowerCase() === '=') {
+      else if (input.key === '=') {
         win.webContents.emit('zoom-changed', event, 'in')
         event.preventDefault()
       }

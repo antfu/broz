@@ -5,6 +5,10 @@ broz
 a simple, frameless browser for screenshots
 
 $ npx broz antfu.me
+  
+$ npx broz antfu.me --width=390 --height=844
+  
+
 
 <br>
 

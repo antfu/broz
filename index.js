@@ -1,6 +1,6 @@
 // @ts-check
 const process = require('node:process')
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem } = require('electron')
 const createState = require('electron-window-state')
 const yargs = require('yargs')
 
@@ -59,6 +59,16 @@ yargs
   .help()
   .parse()
 
+const windowSizes = [
+  { width: 1920, height: 1080 },
+  { width: 1280, height: 720 },
+  { width: 1024, height: 768 },
+  { width: 960, height: 540 },
+  { width: 640, height: 360 },
+  { width: 1000, height: 1000 },
+  { width: 500, height: 500 },
+]
+
 function createMainWindow(args) {
   const state = createState({
     defaultWidth: 960,
@@ -84,6 +94,39 @@ function createMainWindow(args) {
 
   main.on('resize', debouncedSaveWindowState)
   main.on('move', debouncedSaveWindowState)
+
+  const menu = Menu.getApplicationMenu()
+  menu.insert(1, new MenuItem({
+    label: 'Broz',
+    submenu: [
+      {
+        label: 'Resize',
+        submenu: windowSizes.map(({ width, height }) => ({
+          label: `${width} x ${height} (${getRatio(width, height)})`,
+          click: () => {
+            main.setSize(width, height, true)
+            state.saveState(main)
+          },
+        })),
+      },
+      {
+        label: 'Flip Size',
+        click: () => {
+          const [width, height] = main.getSize()
+          main.setSize(height, width)
+          state.saveState(main)
+        },
+      },
+      {
+        label: 'Center Window',
+        click: () => {
+          main.center()
+          state.saveState(main)
+        },
+      },
+    ],
+  }))
+  Menu.setApplicationMenu(menu)
 
   configureWindow(main, args)
 
@@ -173,4 +216,10 @@ function debounce(fn, delay) {
       fn(...args)
     }, delay)
   }
+}
+
+function getRatio(width, height) {
+  const gcd = (a, b) => b ? gcd(b, a % b) : a
+  const r = gcd(width, height)
+  return `${width / r}:${height / r}`
 }

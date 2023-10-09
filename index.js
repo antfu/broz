@@ -1,4 +1,5 @@
 // @ts-check
+const process = require('node:process')
 const { app, BrowserWindow } = require('electron')
 const createState = require('electron-window-state')
 const yargs = require('yargs')
@@ -27,12 +28,12 @@ yargs
       })
       .option('height', {
         type: 'number',
-        default: false,
+        default: undefined,
         desc: 'set initial window height',
       })
       .option('width', {
         type: 'number',
-        default: false,
+        default: undefined,
         desc: 'set initial window width',
       }),
     async (args) => {
@@ -76,6 +77,14 @@ function createMainWindow(args) {
   })
 
   state.manage(main)
+  const debouncedSaveWindowState = debounce(
+    event => state.saveState(event.sender),
+    500,
+  )
+
+  main.on('resize', debouncedSaveWindowState)
+  main.on('move', debouncedSaveWindowState)
+
   configureWindow(main, args)
 
   return main
@@ -154,4 +163,14 @@ document.head.appendChild(rootStyle)
     win.setAlwaysOnTop(true, 'floating')
 
   return win
+}
+
+function debounce(fn, delay) {
+  let timeoutID = null
+  return function (...args) {
+    clearTimeout(timeoutID)
+    timeoutID = setTimeout(() => {
+      fn(...args)
+    }, delay)
+  }
 }

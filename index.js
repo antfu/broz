@@ -102,13 +102,15 @@ function createMainWindow(args) {
       {
         label: 'Copy URL',
         click: () => {
-          clipboard.writeText(main.webContents.getURL())
+          const win = BrowserWindow.getFocusedWindow() || main
+          clipboard.writeText(win.webContents.getURL())
         },
       },
       {
         label: 'Open in System Browser',
         click: () => {
-          shell.openExternal(main.webContents.getURL())
+          const win = BrowserWindow.getFocusedWindow() || main
+          shell.openExternal(win.webContents.getURL())
         },
       },
       {
@@ -117,26 +119,30 @@ function createMainWindow(args) {
       {
         label: 'Resize',
         submenu: windowSizes.map(({ width, height }) => ({
+
           label: `${width} x ${height} (${getRatio(width, height)})`,
           click: () => {
-            main.setSize(width, height, true)
-            state.saveState(main)
+            const win = BrowserWindow.getFocusedWindow() || main
+            win.setSize(width, height, true)
+            state.saveState(win)
           },
         })),
       },
       {
         label: 'Flip Size',
         click: () => {
-          const [width, height] = main.getSize()
+          const win = BrowserWindow.getFocusedWindow() || main
+          const [width, height] = win.getSize()
           main.setSize(height, width)
-          state.saveState(main)
+          state.saveState(win)
         },
       },
       {
         label: 'Center Window',
         click: () => {
+          const win = BrowserWindow.getFocusedWindow() || main
           main.center()
-          state.saveState(main)
+          state.saveState(win)
         },
       },
     ],

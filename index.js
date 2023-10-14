@@ -1,6 +1,6 @@
 // @ts-check
 const process = require('node:process')
-const { app, BrowserWindow, Menu, MenuItem } = require('electron')
+const { clipboard, shell, app, BrowserWindow, Menu, MenuItem } = require('electron')
 const createState = require('electron-window-state')
 const yargs = require('yargs')
 
@@ -99,6 +99,21 @@ function createMainWindow(args) {
   menu.insert(1, new MenuItem({
     label: 'Broz',
     submenu: [
+      {
+        label: 'Copy URL',
+        click: () => {
+          clipboard.writeText(main.webContents.getURL())
+        },
+      },
+      {
+        label: 'Open in System Browser',
+        click: () => {
+          shell.openExternal(main.webContents.getURL())
+        },
+      },
+      {
+        type: 'separator',
+      },
       {
         label: 'Resize',
         submenu: windowSizes.map(({ width, height }) => ({

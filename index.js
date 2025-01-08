@@ -35,6 +35,11 @@ yargs
         type: 'number',
         default: undefined,
         desc: 'set initial window width',
+      })
+      .option('frame', {
+        type: 'boolean',
+        defalt: false,
+        desc: 'set window has a frame',
       }),
     async (args) => {
       app.setName('Broz')
@@ -83,7 +88,7 @@ function createMainWindow(args) {
     show: true,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: -100, y: -100 },
-    frame: false,
+    frame: args.frame,
   })
 
   state.manage(main)

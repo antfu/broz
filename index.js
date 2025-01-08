@@ -101,6 +101,7 @@ function createMainWindow(args) {
   main.on('move', debouncedSaveWindowState)
 
   const menu = Menu.getApplicationMenu()
+  // @ts-ignore
   menu.insert(1, new MenuItem({
     label: 'Broz',
     submenu: [

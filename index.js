@@ -1,68 +1,49 @@
 // @ts-check
 const process = require('node:process')
+const { cac } = require('cac')
 const { clipboard, shell, app, BrowserWindow, Menu, MenuItem } = require('electron')
 const createState = require('electron-window-state')
-const yargs = require('yargs')
 
 let main = null
 
-yargs
-  .scriptName('broz')
-  .usage('$0 [url]')
-  .showHelpOnFail(false)
-  .alias('h', 'help')
-  .alias('v', 'version')
-  .command(
-    '* [url]',
-    'launch broz',
-    args => args
-      .positional('url', {
-        type: 'string',
-        default: 'https://github.com/antfu/broz#readme',
-        desc: 'launch broz with url, the http:// protocol can be omitted',
-      })
-      .option('top', {
-        type: 'boolean',
-        default: false,
-        desc: 'set window always on top',
-      })
-      .option('height', {
-        type: 'number',
-        default: undefined,
-        desc: 'set initial window height',
-      })
-      .option('width', {
-        type: 'number',
-        default: undefined,
-        desc: 'set initial window width',
-      })
-      .option('frame', {
-        type: 'boolean',
-        defalt: false,
-        desc: 'set window has a frame',
-      }),
-    async (args) => {
-      app.setName('Broz')
-      app.on('window-all-closed', () => app.quit())
+const cli = cac('broz')
 
-      try {
-        await app.whenReady()
-        main = createMainWindow(args)
+cli
+  .command('[url]', 'launch broz')
+  .option('top', 'set window always on top')
+  .option('height', 'set initial window height')
+  .option('width', 'set initial window width')
+  .option('frame', 'set window has a frame')
+  .action(async (url, options) => {
+    const args = {
+      url: url || 'https://github.com/antfu/broz#readme',
+      top: options.top || false,
+      height: options.height ? Number(options.height) : undefined,
+      width: options.width ? Number(options.width) : undefined,
+      frame: options.frame || false,
+    }
 
-        await main.loadURL(
-          args.url.includes('://')
-            ? args.url
-            : `http://${args.url}`,
-        )
-      }
-      catch (e) {
-        console.error(e)
-        process.exit(1)
-      }
-    },
-  )
-  .help()
-  .parse()
+    app.setName('Broz')
+    app.on('window-all-closed', () => app.quit())
+
+    try {
+      await app.whenReady()
+      main = createMainWindow(args)
+
+      await main.loadURL(
+        args.url.includes('://')
+          ? args.url
+          : `http://${args.url}`,
+      )
+    }
+    catch (e) {
+      console.error(e)
+      process.exit(1)
+    }
+  })
+
+cli.help()
+cli.parse()
 
 const windowSizes = [
   { width: 1920, height: 1080 },
@@ -170,7 +151,7 @@ function configureWindow(win, args) {
 const el = document.createElement('div')
 el.id = 'injected-broz-drag'
 const style = document.createElement('style')
-style.innerHTML="#injected-broz-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:99999999;}#injected-broz-drag:hover{background:#8885;}"
+style.innerHTML="#injected-broz-drag{position:fixed;left:10px;top:10px;width:40px;height:40px;border-radius:50%;cursor:grab;-webkit-app-region:drag;z-index:2147483647;}#injected-broz-drag:hover{background:#8885;}"
 document.body.appendChild(el)
 document.body.appendChild(style)
 

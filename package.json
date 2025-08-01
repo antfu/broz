@@ -1,7 +1,7 @@
 {
   "name": "broz",
   "version": "0.6.0",
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.14.0",
   "description": "A simple, frameless browser for screenshots",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -23,13 +23,13 @@
   },
   "dependencies": {
     "cac": "^6.7.14",
-    "electron": "^37.2.0",
+    "electron": "^37.2.5",
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.16.2",
-    "bumpp": "^10.2.0",
-    "eslint": "^9.30.1",
-    "typescript": "^5.8.3"
+    "@antfu/eslint-config": "^5.0.0",
+    "bumpp": "^10.2.2",
+    "eslint": "^9.32.0",
+    "typescript": "^5.9.2"
   }
 }

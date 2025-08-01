@@ -11,8 +11,8 @@ const cli = cac('broz')
 cli
   .command('[url]', 'launch broz')
   .option('top', 'set window always on top')
-  .option('height', 'set initial window height')
-  .option('width', 'set initial window width')
+  .option('height <height>', 'set initial window height')
+  .option('width <width>', 'set initial window width')
   .option('frame', 'set window has a frame')
   .action(async (url, options) => {
     const args = {

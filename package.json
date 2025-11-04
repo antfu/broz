@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "dev": "NODE_OPTIONS=\"--import tsx\" electron ./src/index.ts",
-    "build": "unbuild",
+    "build": "tsdown",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
@@ -49,9 +49,9 @@
     "lint-staged": "^16.2.6",
     "simple-git-hooks": "^2.13.1",
     "taze": "^19.9.0",
+    "tsdown": "^0.15.12",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
-    "unbuild": "^3.6.1",
     "vitest": "^4.0.6"
   },
   "simple-git-hooks": {

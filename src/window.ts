@@ -1,61 +1,10 @@
-// @ts-check
-const process = require('node:process')
-const { cac } = require('cac')
-const { clipboard, shell, app, BrowserWindow, Menu, MenuItem } = require('electron')
-const createState = require('electron-window-state')
+import type { CommandOptions } from './types'
+import { BrowserWindow, clipboard, Menu, MenuItem, shell } from 'electron'
+import createState from 'electron-window-state'
+import { WINDOW_SIZES } from './constants'
+import { debounce, getRatio } from './utils'
 
-let main = null
-
-const cli = cac('broz')
-
-cli
-  .command('[url]', 'launch broz')
-  .option('top', 'set window always on top')
-  .option('height <height>', 'set initial window height')
-  .option('width <width>', 'set initial window width')
-  .option('frame', 'set window has a frame')
-  .action(async (url, options) => {
-    const args = {
-      url: url || 'https://github.com/antfu/broz#readme',
-      top: options.top || false,
-      height: options.height ? Number(options.height) : undefined,
-      width: options.width ? Number(options.width) : undefined,
-      frame: options.frame || false,
-    }
-
-    app.setName('Broz')
-    app.on('window-all-closed', () => app.quit())
-
-    try {
-      await app.whenReady()
-      main = createMainWindow(args)
-
-      await main.loadURL(
-        args.url.includes('://')
-          ? args.url
-          : `http://${args.url}`,
-      )
-    }
-    catch (e) {
-      console.error(e)
-      process.exit(1)
-    }
-  })
-
-cli.help()
-cli.parse()
-
-const windowSizes = [
-  { width: 1920, height: 1080 },
-  { width: 1280, height: 720 },
-  { width: 1024, height: 768 },
-  { width: 960, height: 540 },
-  { width: 640, height: 360 },
-  { width: 1000, height: 1000 },
-  { width: 500, height: 500 },
-]
-
-function createMainWindow(args) {
+export function createMainWindow(args: CommandOptions): BrowserWindow {
   const state = createState({
     defaultWidth: 960,
     defaultHeight: 540,
@@ -82,8 +31,7 @@ function createMainWindow(args) {
   main.on('move', debouncedSaveWindowState)
 
   const menu = Menu.getApplicationMenu()
-  // @ts-ignore
-  menu.insert(1, new MenuItem({
+  menu?.insert(1, new MenuItem({
     label: 'Broz',
     submenu: [
       {
@@ -105,7 +53,7 @@ function createMainWindow(args) {
       },
       {
         label: 'Resize',
-        submenu: windowSizes.map(({ width, height }) => ({
+        submenu: WINDOW_SIZES.map(({ width, height }) => ({
 
           label: `${width} x ${height} (${getRatio(width, height)})`,
           click: () => {
@@ -141,10 +89,7 @@ function createMainWindow(args) {
   return main
 }
 
-/**
- * @param {BrowserWindow} win
- */
-function configureWindow(win, args) {
+function configureWindow(win: BrowserWindow, args: CommandOptions) {
   // injecting a dragable area
   win.webContents.on('dom-ready', () => {
     win.webContents.executeJavaScript(`;(() => {
@@ -214,20 +159,4 @@ document.head.appendChild(rootStyle)
     win.setAlwaysOnTop(true, 'floating')
 
   return win
-}
-
-function debounce(fn, delay) {
-  let timeoutID = null
-  return function (...args) {
-    clearTimeout(timeoutID)
-    timeoutID = setTimeout(() => {
-      fn(...args)
-    }, delay)
-  }
-}
-
-function getRatio(width, height) {
-  const gcd = (a, b) => b ? gcd(b, a % b) : a
-  const r = gcd(width, height)
-  return `${width / r}:${height / r}`
 }

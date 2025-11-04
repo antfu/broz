@@ -12,14 +12,29 @@
     "url": "https://github.com/antfu/broz"
   },
   "bugs": "https://github.com/antfu/broz/issues",
-  "main": "index.js",
-  "bin": {
-    "broz": "./broz.js"
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "broz": "./bin/broz.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "scripts": {
-    "dev": "electron index.js",
+    "dev": "NODE_OPTIONS=\"--import tsx\" electron ./src/index.ts",
+    "build": "unbuild",
     "lint": "eslint .",
-    "release": "bumpp && pnpm publish"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "release": "bumpp",
+    "prepare": "simple-git-hooks",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "cac": "^6.7.14",
@@ -27,9 +42,22 @@
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.0.0",
+    "@antfu/eslint-config": "^6.0.0",
+    "@types/node": "^24.10.0",
     "bumpp": "^10.2.2",
     "eslint": "^9.32.0",
-    "typescript": "^5.9.2"
+    "lint-staged": "^16.2.6",
+    "simple-git-hooks": "^2.13.1",
+    "taze": "^19.9.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2",
+    "unbuild": "^3.6.1",
+    "vitest": "^4.0.6"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

@@ -124,11 +124,11 @@ document.head.appendChild(rootStyle)
   win.webContents.on('before-input-event', (event, input) => {
     if (input.control || input.meta) {
       if (input.key === ']') {
-        win.webContents.goForward()
+        win.webContents.navigationHistory.goForward()
         event.preventDefault()
       }
       else if (input.key === '[') {
-        win.webContents.goBack()
+        win.webContents.navigationHistory.goBack()
         event.preventDefault()
       }
       else if (input.key === '-') {

@@ -1,2 +1,4 @@
 onlyBuiltDependencies:
   - electron
+  - esbuild
+  - simple-git-hooks

@@ -31,7 +31,6 @@
     "build": "tsdown",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
     "release": "bumpp",
     "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm build"
@@ -51,8 +50,7 @@
     "taze": "^19.9.0",
     "tsdown": "^0.15.12",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.2",
-    "vitest": "^4.0.6"
+    "typescript": "^5.9.2"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

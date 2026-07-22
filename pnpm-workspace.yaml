@@ -1,3 +1,14 @@
+allowBuilds:
+  esbuild: true
+  simple-git-hooks: true
+minimumReleaseAgeExclude:
+  - '@antfu/eslint-config@9.2.0'
+  - bumpp@12.0.0
+  - electron@43.2.0
+  - taze@19.16.0
+  - tsdown@0.22.13
+shellEmulator: true
+trustPolicy: no-downgrade
 onlyBuiltDependencies:
   - electron
   - esbuild
